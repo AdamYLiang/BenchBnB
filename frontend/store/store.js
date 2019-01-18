@@ -9,6 +9,6 @@ const configureStore = (preloadedState = {}) => (
     preloadedState,
     applyMiddleware(thunk, logger)
   )
-)
+);
 
 export default configureStore;
