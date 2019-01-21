@@ -18,6 +18,7 @@ class Greeting extends React.Component {
                 <Link to='/signup'>Signup</Link>
             </nav>
         );
+        
         return currentUser ? loginGreeting() : sessionForms();
     }
 }
