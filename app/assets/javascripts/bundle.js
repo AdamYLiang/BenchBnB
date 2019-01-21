@@ -90,7 +90,7 @@
 /*!*********************************************!*\
   !*** ./frontend/actions/session_actions.js ***!
   \*********************************************/
-/*! exports provided: RECEIVE_CURRENT_USER, LOGOUT_CURRENT_USER, RECEIVE_SESSION_ERRORS, receiveCurrentUser, logoutCurrentUser, receiveErrors, createNewUser, login, logout */
+/*! exports provided: RECEIVE_CURRENT_USER, LOGOUT_CURRENT_USER, RECEIVE_SESSION_ERRORS, RECEIVE_BLANK_ERRORS, receiveCurrentUser, logoutCurrentUser, receiveErrors, blankErrors, createNewUser, login, logout */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -98,9 +98,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RECEIVE_CURRENT_USER", function() { return RECEIVE_CURRENT_USER; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LOGOUT_CURRENT_USER", function() { return LOGOUT_CURRENT_USER; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RECEIVE_SESSION_ERRORS", function() { return RECEIVE_SESSION_ERRORS; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RECEIVE_BLANK_ERRORS", function() { return RECEIVE_BLANK_ERRORS; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "receiveCurrentUser", function() { return receiveCurrentUser; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "logoutCurrentUser", function() { return logoutCurrentUser; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "receiveErrors", function() { return receiveErrors; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "blankErrors", function() { return blankErrors; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createNewUser", function() { return createNewUser; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "login", function() { return login; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "logout", function() { return logout; });
@@ -109,6 +111,7 @@ __webpack_require__.r(__webpack_exports__);
 var RECEIVE_CURRENT_USER = 'RECEIVE_CURRENT_USER';
 var LOGOUT_CURRENT_USER = 'LOGOUT_CURRENT_USER';
 var RECEIVE_SESSION_ERRORS = 'RECEIVE_SESSION_ERRORS';
+var RECEIVE_BLANK_ERRORS = 'RECEIVE_BLANK_ERRORS';
 var receiveCurrentUser = function receiveCurrentUser(user) {
   return {
     type: RECEIVE_CURRENT_USER,
@@ -126,8 +129,14 @@ var receiveErrors = function receiveErrors(errors) {
     errors: errors
   };
 };
+var blankErrors = function blankErrors() {
+  return {
+    type: RECEIVE_BLANK_ERRORS
+  };
+};
 var createNewUser = function createNewUser(formUser) {
   return function (dispatch) {
+    dispatch(blankErrors());
     return Object(_util_session_api_util__WEBPACK_IMPORTED_MODULE_0__["postUser"])(formUser).then(function (user) {
       return dispatch(receiveCurrentUser(user));
     }, function (err) {
@@ -137,6 +146,7 @@ var createNewUser = function createNewUser(formUser) {
 };
 var login = function login(formUser) {
   return function (dispatch) {
+    dispatch(blankErrors());
     return Object(_util_session_api_util__WEBPACK_IMPORTED_MODULE_0__["postSession"])(formUser).then(function (user) {
       return dispatch(receiveCurrentUser(user));
     }, function (err) {
@@ -432,6 +442,9 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
   return {
     processForm: function processForm(user) {
       return dispatch(Object(_actions_session_actions__WEBPACK_IMPORTED_MODULE_3__["login"])(user));
+    },
+    clearErrors: function clearErrors() {
+      return dispatch(Object(_actions_session_actions__WEBPACK_IMPORTED_MODULE_3__["blankErrors"])());
     }
   };
 };
@@ -518,6 +531,17 @@ function (_React$Component) {
       }));
     }
   }, {
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      this.props.clearErrors();
+    } // componentDidUpdate(prevProps) {
+    //     debugger
+    //     if(prevProps.processForm != this.props.processForm) {
+    //         this.props.clearErrors();
+    //     }
+    // }
+
+  }, {
     key: "render",
     value: function render() {
       var typeHeader = this.props.formType === 'login' ? 'Login' : 'Sign Up';
@@ -587,6 +611,9 @@ var mapDispatchToProps = function mapDispatchToProps(dispatch) {
   return {
     processForm: function processForm(user) {
       return dispatch(Object(_actions_session_actions__WEBPACK_IMPORTED_MODULE_3__["createNewUser"])(user));
+    },
+    clearErrors: function clearErrors() {
+      return dispatch(Object(_actions_session_actions__WEBPACK_IMPORTED_MODULE_3__["blankErrors"])());
     }
   };
 };
@@ -684,6 +711,9 @@ var sessionErrorsReducer = function sessionErrorsReducer() {
 
     case _actions_session_actions__WEBPACK_IMPORTED_MODULE_0__["RECEIVE_SESSION_ERRORS"]:
       return action.errors;
+
+    case _actions_session_actions__WEBPACK_IMPORTED_MODULE_0__["RECEIVE_BLANK_ERRORS"]:
+      return [];
 
     default:
       return state;

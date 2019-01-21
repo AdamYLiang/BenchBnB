@@ -34,6 +34,17 @@ class SessionForm extends React.Component {
         )
     }
 
+    componentDidMount() {
+        this.props.clearErrors();
+    }
+
+    // componentDidUpdate(prevProps) {
+    //     debugger
+    //     if(prevProps.processForm != this.props.processForm) {
+    //         this.props.clearErrors();
+    //     }
+    // }
+
     render() {
         const typeHeader = (this.props.formType === 'login' ? 'Login' : 'Sign Up');
         const currentErrors = this.props.errors || [];
