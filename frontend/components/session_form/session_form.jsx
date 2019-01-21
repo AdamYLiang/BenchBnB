@@ -12,7 +12,11 @@ class SessionForm extends React.Component {
 
     handleSubmit(e) {
         e.preventDefault();
-        const user = Object.assign({}. this.state);
+
+        debugger
+        const user = Object.assign({}, this.state);
+
+        debugger
         this.props.processForm(user);
     }
 
@@ -24,7 +28,8 @@ class SessionForm extends React.Component {
 
     render() {
         const typeHeader = (this.props.formType === 'login' ? 'Login' : 'Sign Up');
-        const errorsList = this.props.errors.map((error, i) => {
+        const currentErrors = this.props.errors || [];
+        const errorsList = currentErrors.map((error, i) => {
             return (
                 <li key={i}>
                     {error}
