@@ -6,7 +6,7 @@ class Api::UsersController < ApplicationController
       login!(@user)
       render 'api/users/show'
     else
-      render json: ["Invalid fields"], status: 401
+      render json: @user.errors.full_messages, status: 401
     end
   end
 

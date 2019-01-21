@@ -22,6 +22,18 @@ class SessionForm extends React.Component {
         };
     }
 
+    renderErrors() {
+        return(
+            <ul>
+                {this.props.errors.map((error, i) => (
+                    <li key={i}>
+                        {error}
+                    </li>
+                ))}
+            </ul>
+        )
+    }
+
     render() {
         const typeHeader = (this.props.formType === 'login' ? 'Login' : 'Sign Up');
         const currentErrors = this.props.errors || [];
@@ -32,12 +44,11 @@ class SessionForm extends React.Component {
                 </li>
             );
         });
+
         return (
             <>
                 <h2>{typeHeader} or {this.props.otherLink}</h2>
-                <ul>
-                    {errorsList}
-                </ul>
+                {this.renderErrors()}
 
                 <form onSubmit={this.handleSubmit}>
                     <label> Username:

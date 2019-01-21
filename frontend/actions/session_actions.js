@@ -14,19 +14,26 @@ export const logoutCurrentUser = () => ({
   type: LOGOUT_CURRENT_USER,
 });
 
-export const receiveError = errors => ({
+export const receiveErrors = errors => ({
   type: RECEIVE_SESSION_ERRORS,
   errors
 });
 
-export const createNewUser = (formUser) => dispatch => postUser(formUser)
-  .then( user => dispatch(receiveCurrentUser(user)) );
-
-export const login = (formUser) => dispatch => postSession(formUser)
+export const createNewUser = (formUser) => dispatch => (postUser(formUser)
   .then( (user) => {
       return dispatch(receiveCurrentUser(user));
+    }, err => {
+      return dispatch(receiveErrors(err.responseJSON));
     } 
-  );
+  ));
+
+export const login = (formUser) => dispatch => (postSession(formUser)
+  .then( (user) => {
+      return dispatch(receiveCurrentUser(user));
+    }, err => {
+      return dispatch(receiveErrors(err.responseJSON));
+    } 
+  ));
 
 export const logout = () => dispatch => deleteSession()
   .then( () => dispatch(logoutCurrentUser()) );
